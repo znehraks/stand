@@ -65,9 +65,15 @@ await cap(A, S['04-refuse'].caption, SUB);
 const bad = await agent(A, 'write_part', { part: 'trumpet', from_bar: 1, bars: [{ notes: [{ pitch: 'D6', dur: 'q' }, { pitch: 'D6', dur: 'q' }, { pitch: 'C6', dur: 'h' }] }] });
 console.log('refused:', JSON.stringify(bad).slice(0, 240));
 await sleep(4500);
-await agent(A, 'write_part', { part: 'trumpet', from_bar: 1, bars: [{ notes: [{ pitch: 'D5', dur: 'q' }, { pitch: 'D5', dur: 'q' }, { pitch: 'C5', dur: 'h' }] }] });
-await sleep(2500);
-await agent(A, 'check', {});
+await agent(A, 'write_part', { part: 'trumpet', from_bar: 1, bars: [{ notes: [{ pitch: 'G4', dur: 'q' }, { pitch: 'G4', dur: 'q' }, { pitch: 'A4', dur: 'h' }] }] });
+await sleep(2200);
+// The tune itself dips below a beginner flute in bar 12 — the page flagged it, the agent lifts it.
+const before = await agent(A, 'check', {});
+console.log('errors before fix:', (before.errors ?? []).length);
+await agent(A, 'write_part', { part: parts[0], from_bar: 12, bars: [{ notes: [{ pitch: 'C4', dur: 'q' }, { pitch: 'D4', dur: 'q' }, { pitch: 'G4', dur: 'q' }, { pitch: 'E4', dur: 'q' }] }] });
+await sleep(1800);
+const after = await agent(A, 'check', {});
+console.log('errors after fix:', (after.errors ?? []).length);
 await until('04-refuse', st, 300);
 
 // S5 — the person decides by ear

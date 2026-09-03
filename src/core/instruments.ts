@@ -166,7 +166,9 @@ export const INSTRUMENTS: Record<string, Instrument> = {
     transposition: 2, // Bb: written = sounding + 2
     orderHint: 10,
     aliases: ['bb trumpet', 'b flat trumpet', 'trumpet in bb', 'tpt', 'tpt.', 'trumpets', 'cornet', 'flugelhorn', 'trumpet 1', 'trumpet 2'],
-    range: R('F#3..C5', 'E3..F5', 'E3..Bb5', 'E3..E6'),
+    // elementary = written G3..D5 (the first-year low G; sounding F3, not the instrument's own
+    // written F#3). adult = written F#3..D6 — high D, not the lead-player screaming register.
+    range: R('F3..C5', 'E3..F5', 'E3..Bb5', 'E3..C6'),
   },
   horn: {
     id: 'horn',
@@ -177,8 +179,8 @@ export const INSTRUMENTS: Record<string, Instrument> = {
     transposition: 7, // F: written = sounding + 7
     orderHint: 20,
     aliases: ['french horn', 'f horn', 'horn in f', 'hn', 'hn.', 'french horns', 'horns', 'waldhorn'],
-    // elementary = written G3..D5; adult = written F#2..G6.
-    range: R('C3..G4', 'G2..C5', 'F2..F5', 'B1..C6'),
+    // elementary = written G3..D5; adult = written F#2..F6, the top a first horn is actually asked for.
+    range: R('C3..G4', 'G2..C5', 'F2..F5', 'B1..Bb5'),
   },
   trombone: {
     id: 'trombone',
@@ -241,8 +243,9 @@ export const INSTRUMENTS: Record<string, Instrument> = {
     transposition: 0,
     orderHint: 10,
     aliases: ['vln', 'vln.', 'vn', 'fiddle', 'violins', 'violin 1', 'violin 2', 'violino', 'geige'],
+    // elementary reaches onto the E string (open E5 up to third finger A5), which Book 1 teaches;
     // middle = the complete first position; high adds third and fifth position.
-    range: R('G3..D5', 'G3..B5', 'G3..E6', 'G3..E7'),
+    range: R('G3..A5', 'G3..B5', 'G3..E6', 'G3..E7'),
   },
   viola: {
     id: 'viola',
@@ -253,7 +256,8 @@ export const INSTRUMENTS: Record<string, Instrument> = {
     transposition: 0,
     orderHint: 20,
     aliases: ['vla', 'vla.', 'violas', 'bratsche', 'alto violin'],
-    range: R('C3..G4', 'C3..E5', 'C3..A5', 'C3..E6'),
+    // elementary includes the A string (open A4 up to D5) — the second string a beginner is taught.
+    range: R('C3..D5', 'C3..E5', 'C3..A5', 'C3..E6'),
   },
   cello: {
     id: 'cello',
@@ -289,7 +293,9 @@ export const INSTRUMENTS: Record<string, Instrument> = {
     transposition: 0,
     orderHint: 20,
     aliases: ['alto voice', 'altos', 'contralto', 'mezzo', 'mezzo-soprano', 'mezzo soprano'],
-    range: R('C4..C5', 'A3..D5', 'G3..E5', 'F3..F5'),
+    // An alto is defined by the notes under the melody: young altos own A3–C5, so elementary has to
+    // reach below the elementary soprano's C4 or there is nowhere to put the second part.
+    range: R('A3..C5', 'A3..D5', 'G3..E5', 'F3..F5'),
   },
   tenor: {
     id: 'tenor',

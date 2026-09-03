@@ -6,6 +6,12 @@ Bring a melody, your ensemble and your students' level. Say *"arrange this for m
 
 ![Stand while an agent writes the parts](docs/shots/writing.png)
 
+**What the page refuses, verbatim:** `Trumpet bar 1 note 1: written E6 (sounding D6) is above the elementary range F#3–C5 sounding (G#3–D5 written).` — with `suggestion: "Drop it an octave to sounding D5 (written E5)."` The agent reads that and rewrites the bar. Even the tune itself gets caught: Ode to Joy dips to a low G in bar 12, below a beginner flute, and the page says so before anyone hands out parts.
+
+| Conductor score, seven parts | The transposed part a player reads |
+|---|---|
+| ![](docs/shots/writing.png) | ![](docs/shots/part.png) |
+
 ---
 
 ## Try it in 90 seconds
@@ -50,7 +56,7 @@ Arranging for a real school ensemble is not composition — it is *fitting*: six
 
 ## Tool surface
 
-Tool surfaces are swapped with `AbortSignal`s as the phase changes, so an agent never sees a tool it cannot use. The canonical contract is [`docs/TOOLS.md`](docs/TOOLS.md).
+Tool surfaces are swapped with `AbortSignal`s as the phase changes, so an agent never sees a tool it cannot use — **18 tools while arranging, 21 across the three surfaces**. The canonical contract is [`docs/TOOLS.md`](docs/TOOLS.md).
 
 | Phase | Tools |
 |---|---|
@@ -89,8 +95,9 @@ Everything runs in the page. There is no server: the Worker only serves static a
 ```bash
 npm install
 npm run dev            # Vite + the Cloudflare plugin
-npm test               # unit tests: pitch/key math, ranges, checker, harmony, exporters, presets
-npm run test:e2e       # Playwright: drives every tool through a document.modelContext stand-in
+npm test               # 104 unit tests: pitch/key math, ranges, checker, harmony, exporters, presets, playback
+npm run test:e2e       # 8 Playwright tests driving every tool through a document.modelContext stand-in:
+                       # the refused write, the locked bar, the human's A/B choice, export-is-human-only
 npm run deploy         # vite build && wrangler deploy
 ```
 

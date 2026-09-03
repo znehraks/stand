@@ -1,12 +1,52 @@
 [
- {"id":"01-title","caption":"","text":"This is Stand. An arranging studio your agent can write in."},
- {"id":"02-brief","caption":"A melody, an ensemble, a level. That is the whole brief.","text":"A school band director never gets to use a published arrangement as it is. Six clarinets, no trombone, a first year trumpet that tops out at G five. So they rewrite it by hand, part by part, checking every range and every transposition. Here is the whole brief instead: a melody, an ensemble, and a level."},
- {"id":"03-writes","caption":"The agent writes the parts into the score. One at a time.","text":"The agent sets up the ensemble and writes the parts into the score. Not a file it hands me, not a chat message. The staves I am looking at."},
- {"id":"04-refuse","caption":"The page refuses what the players cannot play — with the bar, the note, and the fix.","text":"And here is the part I care about. A trumpet D six goes in, and the page refuses the write. Bar twelve, written D six, above the range a beginner can play, drop it an octave. The agent reads that and rewrites it an octave lower. The tool boundary is a music guardrail: the page holds the ranges, the transpositions, the bar lengths, so a model cannot write something a child cannot play."},
- {"id":"05-hear","caption":"The agent cannot hear. You can. So it plays you both endings and waits.","text":"Now listen. Two endings are both defensible, and the agent has no way to tell which is better, because it cannot hear. So it plays me both and waits. That is not a confirmation dialog bolted onto a chatbot. It is the one judgement a language model genuinely cannot make, handed back to the person by design."},
- {"id":"06-lock","caption":"Lock a bar and the agent writes around it. One score, two hands.","text":"I like this bar, so I lock it. Now I ask for the whole trumpet part again, and the locked bar comes back untouched: the write reports it as skipped. I drag a note, the agent keeps writing, and every hand edit and every tool call lands in the same timeline."},
- {"id":"07-parts","caption":"The transposed part a player actually reads. Then MusicXML, parts, MIDI.","text":"And this is what it is all for. The trumpet part alone, in its written key, a step up from concert. Export the parts, the MusicXML, or the MIDI. Thirty children can read this tomorrow. No audio generator can hand them that."},
- {"id":"08-why","caption":"Why WebMCP: the page knows what the agent cannot fake.","text":"Why does this need WebMCP? Because the page holds what the agent cannot fake or verify: notation, sound, instrument ranges at four teaching levels, transposition. An agent driving a screenshot gets none of it, and a back end server cannot show a person the score it is changing."},
- {"id":"09-how","caption":"Three tool surfaces, twenty-two tools, and no tool that can export.","text":"Under the hood: three tool surfaces swapped with abort signals, twenty two tools on the arranging surface, read only hints on the reads, bar numbers one based at the boundary, sounding and written pitch on every read so the model never does transposition arithmetic, and self correcting errors on every rejection. No tool can export, print, lock a bar, or answer for the person. Those are buttons."},
- {"id":"10-end","caption":"","text":"Stand. Your ensemble, your students' level, your ear. Stand dot znehraks dot workers dot dev."}
+ {
+  "id": "01-title",
+  "caption": "",
+  "text": "This is Stand. An arranging studio your agent can write in."
+ },
+ {
+  "id": "02-brief",
+  "caption": "A melody, an ensemble, a level. That is the whole brief.",
+  "text": "A school band director never gets to use a published arrangement as it is. Six clarinets, no trombone, a first year trumpet that tops out at G five. So they rewrite it by hand, part by part, checking every range and every transposition. Here is the whole brief instead: a melody, an ensemble, and a level."
+ },
+ {
+  "id": "03-writes",
+  "caption": "The agent writes the parts into the score. One at a time.",
+  "text": "The agent sets up the ensemble and writes the parts into the score. Not a file it hands me, not a chat message. The staves I am looking at."
+ },
+ {
+  "id": "04-refuse",
+  "caption": "The page refuses what the players cannot play — with the bar, the note, and the fix.",
+  "text": "And here is the part I care about. A trumpet D six goes in, and the page refuses the write. Bar twelve, written D six, above the range a beginner can play, drop it an octave. The agent reads that and rewrites it an octave lower. The tool boundary is a music guardrail: the page holds the ranges, the transpositions, the bar lengths, so a model cannot write something a child cannot play."
+ },
+ {
+  "id": "05-hear",
+  "caption": "The agent cannot hear. You can. So it plays you both endings and waits.",
+  "text": "Now listen. Two endings are both defensible, and the agent has no way to tell which is better, because it cannot hear. So it plays me both and waits. That is not a confirmation dialog bolted onto a chatbot. It is the one judgement a language model genuinely cannot make, handed back to the person by design."
+ },
+ {
+  "id": "06-lock",
+  "caption": "Lock a bar and the agent writes around it. One score, two hands.",
+  "text": "I like this bar, so I lock it. Now I ask for the whole trumpet part again, and the locked bar comes back untouched: the write reports it as skipped. I drag a note, the agent keeps writing, and every hand edit and every tool call lands in the same timeline."
+ },
+ {
+  "id": "07-parts",
+  "caption": "The transposed part a player actually reads. Then MusicXML, parts, MIDI.",
+  "text": "And this is what it is all for. The trumpet part alone, in its written key, a step up from concert. Export the parts, the MusicXML, or the MIDI. Thirty children can read this tomorrow. No audio generator can hand them that."
+ },
+ {
+  "id": "08-why",
+  "caption": "Why WebMCP: the page knows what the agent cannot fake.",
+  "text": "Why does this need WebMCP? Because the page holds what the agent cannot fake or verify: notation, sound, instrument ranges at four teaching levels, transposition. An agent driving a screenshot gets none of it, and a back end server cannot show a person the score it is changing."
+ },
+ {
+  "id": "09-how",
+  "caption": "Three tool surfaces, eighteen arranging tools, and no tool that can export.",
+  "text": "Under the hood: three tool surfaces swapped with abort signals, eighteen tools on the arranging surface and twenty one across the three, read only hints on the reads, bar numbers one based at the boundary, sounding and written pitch on every read so the model never does transposition arithmetic, and self correcting errors on every rejection. No tool can export, print, lock a bar, or answer for the person. Those are buttons."
+ },
+ {
+  "id": "10-end",
+  "caption": "",
+  "text": "Stand. Your ensemble, your students' level, your ear. Stand dot znehraks dot workers dot dev."
+ }
 ]

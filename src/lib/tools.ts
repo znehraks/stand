@@ -310,6 +310,7 @@ function briefing(env: ToolEnv): Input {
   const chords = score.chords.slice(0, 64);
   return {
     phase: store.phase,
+    parts_not_shown: score.parts.length > parts.length ? `${score.parts.length - parts.length} more part(s); call read_part by id.` : undefined,
     title: score.title,
     key: score.key,
     time: score.time,
@@ -417,7 +418,7 @@ function emptySpecs(env: ToolEnv): ToolSpec[] {
         const id = asString(input.melody);
         if (!id) return fail(`melody is required. Available: ${PRESETS.map((p) => p.id).join(', ') || '(none)'}`);
         const r = env.store.loadPreset(id, 'agent');
-        if (!r.ok) return fail(r.error ?? `could not load “${id}”.`);
+        if (!r.ok) return fail(r.error ?? `could not load “${id}” — call list_melodies and pass one of the ids it returns.`);
         const score = env.store.score!;
         return {
           ok: true,
@@ -472,9 +473,15 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       const wfifths = keyFifths(wkey);
       const total = part.measures.length;
       const from = toIndex(input.from_bar, 0);
-      const to = Math.min(total - 1, input.to_bar === undefined ? total - 1 : toIndex(input.to_bar, total - 1));
+      // Keep the bar the caller asked for for the error text, and the clamped one for the read.
+      const askedTo = input.to_bar !== undefined;
+      const wantedTo = askedTo ? toIndex(input.to_bar, total - 1) : total - 1;
+      const to = Math.min(total - 1, wantedTo);
       if (total === 0) return { part: part.id, label: part.label, instrument: inst?.name ?? part.instrumentId, written_key: wkey, bars: [] };
-      if (from > to) return fail(`from_bar ${toBar(from)} is after to_bar ${toBar(to)} — this part has bars 1–${total}.`);
+      if (askedTo && from > wantedTo) {
+        return fail(`from_bar ${toBar(from)} is after to_bar ${toBar(wantedTo)} — call read_part again with the lower bar as from_bar; this part has bars 1–${total}.`);
+      }
+      if (from > to) return fail(`from_bar ${toBar(from)} is past the end — call read_part again with a from_bar inside bars 1–${total}.`);
       const capped = Math.min(to, from + 31);
       const bars = [];
       for (let i = from; i <= capped; i++) {
@@ -552,7 +559,7 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       const level = asString(input.level) as Level | undefined;
       if (level && !LEVELS.includes(level)) return fail(`level must be one of: ${LEVELS.join(', ')}`);
       const r = env.store.setEnsemble(specsIn, level, 'agent');
-      if (!r.ok) return fail(r.error ?? 'could not set the ensemble.');
+      if (!r.ok) return fail(r.error ?? 'could not set the ensemble — call list_instruments and pass names from that list.');
       const score = needScore(env);
       const kept = score.parts.filter((p) => p.measures.some(hasSound)).map((p) => p.id);
       const emptyParts = score.parts.filter((p) => !p.measures.some(hasSound));
@@ -592,7 +599,7 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       if (!Object.keys(patch).length) return fail('give at least one of title, tempo or level.');
       const before = { title: score.title, tempo: score.tempo, level: score.level };
       const r = env.store.setMeta(patch, 'agent');
-      if (!r.ok) return fail(r.error ?? 'could not change the score.');
+      if (!r.ok) return fail(r.error ?? `could not change the score — send a title, a tempo of 30–240, or a level of ${LEVELS.join(', ')}, then call set_meta again.`);
       const after = env.store.score!;
       const changed: string[] = [];
       if (patch.title !== undefined && after.title !== before.title) changed.push(`title → ${after.title}`);
@@ -624,7 +631,7 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       if (!key) return fail(`key is required. Use one of: ${KEYS.join(', ')}`);
       if (!KEYS.includes(key)) return fail(`“${key}” is not a key this page knows. Use one of: ${KEYS.join(', ')}`);
       const r = env.store.setKey(key, 'agent');
-      if (!r.ok) return fail(r.error ?? 'could not set the key.');
+      if (!r.ok) return fail(r.error ?? `could not set the key — call get_score for the current key, then try set_key again with one of: ${KEYS.join(', ')}`);
       const score = needScore(env);
       const written: Record<string, string> = {};
       for (const p of score.parts) written[p.id] = writtenKey(key, instrumentOf(p)?.transposition ?? 0);
@@ -649,7 +656,7 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       const time = asString(input.time) as TimeSig | undefined;
       if (!time || !TIMES.includes(time)) return fail(`time must be one of: ${TIMES.join(', ')}`);
       const r = env.store.setTime(time, 'agent');
-      if (!r.ok) return fail(r.error ?? 'could not change the time signature.');
+      if (!r.ok) return fail(r.error ?? `could not change the time signature — call check to see which bars are in the way, rewrite them with write_part, then call set_time again with ${time}.`);
       return { ok: true, time, next_step: 'Every bar must now total one bar of ' + time + '. Call check to confirm, then play.' };
     },
   });
@@ -688,7 +695,7 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       const warnings = (r.issues ?? []).map(issueLine);
       const emptyParts = env.store.score!.parts.filter((p) => !p.measures.some(hasSound));
       const next = skipped.length
-        ? `Bars ${skipped.join(', ')} are locked by the person, so they kept their music — leave them, or ask before changing them.`
+        ? `${skipped.length === 1 ? `Bar ${skipped[0]} is` : `Bars ${skipped.join(', ')} are`} locked by the person, so the music already there stayed — only they can unlock a bar, so ask before changing one.`
         : emptyParts.length
           ? `Write ${emptyParts[0].label} next with write_part, or call harmonize to draft it.`
           : 'Call check, then play so the person can hear it.';
@@ -723,7 +730,7 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       if (raw.length > 64) return fail('write at most 64 chord symbols in one call.');
       const from = toIndex(input.from_bar, 0);
       const r = env.store.writeChords(raw.map((c) => String(c ?? '')), from, 'agent');
-      if (!r.ok) return fail(r.error ?? 'could not write the chords.');
+      if (!r.ok) return fail(r.error ?? `could not write the chords — send one symbol per bar and call write_chords again with from_bar ${toBar(from)}.`);
       const score = needScore(env);
       return {
         ok: true,
@@ -765,8 +772,14 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       if (!style || !(STYLES as readonly string[]).includes(style)) return fail(`style must be one of: ${STYLES.join(', ')}`);
       const bars = measureCount(score);
       const from = toIndex(input.from_bar, 0);
-      const to = input.to_bar === undefined ? bars - 1 : toIndex(input.to_bar, bars - 1);
-      if (from > to) return fail(`from_bar ${toBar(from)} is after to_bar ${toBar(to)}. This score has bars 1–${bars}.`);
+      const askedTo = input.to_bar !== undefined;
+      const wantedTo = askedTo ? toIndex(input.to_bar, bars - 1) : bars - 1;
+      if (askedTo && from > wantedTo) {
+        return fail(`from_bar ${toBar(from)} is after to_bar ${toBar(wantedTo)}. Call harmonize again with the lower bar as from_bar; this score has bars 1–${bars}.`);
+      }
+      if (from >= bars) return fail(`from_bar ${toBar(from)} is past the end. Call harmonize again with a from_bar inside bars 1–${bars}.`);
+      // Report only bars this score actually has, so the range in every message is real.
+      const to = Math.min(wantedTo, bars - 1);
       const draft = harmonizeDraft(score, { sourcePart: source.id, targetParts: targets.map((t) => t.id), style, from, to });
       const ids = Object.keys(draft.measuresByPart);
       if (!ids.length) {
@@ -834,11 +847,15 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       }
       const targetKey = toKey ?? keyFromFifths(keyFifths(score.key) + fifthsDelta(semitones), isMinorKey(score.key));
       const fifths = keyFifths(targetKey);
+      // A locked bar never moves, so it goes into the plan untouched. Transposing it here would let
+      // a bar the write is going to skip anyway reject the whole move.
       const plan = score.parts.map((part) => ({
         part,
-        measures: part.measures.map((m) => ({
-          notes: m.notes.map((n) => ({ ...n, pitch: isRest(n.pitch) ? 'r' : transposePitch(n.pitch, semitones, fifths) })),
-        })) as Measure[],
+        measures: part.measures.map((m) =>
+          m.locked
+            ? ({ notes: m.notes.map((n) => ({ ...n })) } as Measure)
+            : ({ notes: m.notes.map((n) => ({ ...n, pitch: isRest(n.pitch) ? 'r' : transposePitch(n.pitch, semitones, fifths) })) } as Measure),
+        ),
       }));
       const blocking: CheckIssue[] = [];
       for (const { part, measures } of plan) {
@@ -929,9 +946,13 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
       if (!env.player.armed()) return { ok: false, needs_gesture: true, error: NEEDS_GESTURE };
       const bars = measureCount(score);
       const from = toIndex(input.from_bar, 0);
-      const to = input.to_bar === undefined ? undefined : toIndex(input.to_bar, bars - 1);
-      if (from >= bars) return fail(`bar ${toBar(from)} is past the end — this score has bars 1–${bars}.`);
-      if (to !== undefined && to < from) return fail(`to_bar ${toBar(to)} is before from_bar ${toBar(from)}.`);
+      const wantedTo = input.to_bar === undefined ? undefined : toIndex(input.to_bar, bars - 1);
+      if (from >= bars) return fail(`bar ${toBar(from)} is past the end — this score has bars 1–${bars}. Call play again with a from_bar inside that range.`);
+      if (wantedTo !== undefined && wantedTo < from) {
+        return fail(`to_bar ${toBar(wantedTo)} is before from_bar ${toBar(from)}. Call play again with from_bar first.`);
+      }
+      // Never report playing past the last bar: playing_to has to name a bar this score has.
+      const to = wantedTo === undefined ? undefined : Math.min(wantedTo, bars - 1);
       let ids: string[] | undefined;
       if (Array.isArray(input.parts) && input.parts.length) {
         ids = [];
@@ -1024,7 +1045,8 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
           answer: null,
           status: 'no_answer',
           question,
-          next_step: 'They did not answer. Pick the safer option yourself, say which one you took and why, or ask again more simply.',
+          next_step:
+            'Nobody answered, so there is no choice to report — never present one as theirs. Say the question is still open, take the safer option as your own call and name it as yours, or ask again more simply.',
         };
       }
       const chosen = options.find((o) => o.label === answer);
@@ -1072,7 +1094,11 @@ function arrangingSpecs(env: ToolEnv): ToolSpec[] {
     inputSchema: obj({}),
     execute: async () => {
       const done = env.store.undo('agent');
-      if (!done) return fail('nothing to undo — the score is already at its earliest state in this session.');
+      if (!done) {
+        return fail('nothing to undo — the score is already at its earliest state in this session.', {
+          suggestion: 'Call get_score to see where it stands, then make the change you meant with write_part.',
+        });
+      }
       return { ok: true, issues: summarizeIssues(env.store.issues), next_step: 'Call get_score to see what the score looks like now.' };
     },
   });

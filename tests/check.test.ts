@@ -4,7 +4,7 @@ import { INSTRUMENTS } from '../src/core/instruments';
 import type { CheckIssue, Dur, Level, Measure, Note, Part, Score, TimeSig } from '../src/core/types';
 
 // Fixtures are built by hand against the real instrument table: flute (C, elementary C4..C6),
-// trumpet (Bb, elementary sounding F#3..C5, adult E3..E6), trombone (C, bass clef).
+// trumpet (Bb, elementary sounding F3..C5, adult E3..C6), trombone (C, bass clef).
 
 function n(pitch: string, dur: Dur): Note {
   return { pitch, dur };
