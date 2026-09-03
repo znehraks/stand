@@ -1,0 +1,12 @@
+node_modules
+dist
+.wrangler
+.dev.vars
+.evals
+test-results
+playwright-report
+.DS_Store
+docs/video/build/
+docs/video/*.mp4
+docs/video/build/
+docs/video/*.mp4
