@@ -198,9 +198,9 @@ function Header({ score }: { score?: { title: string; key: string; time: string;
       {score && (
         <div className="now">
           <b>{score.title}</b>
-          <span className="muted">
+          <span className="muted" title={score.source ?? ''}>
             {score.key} · {score.time} · ♩={score.tempo} · {score.level}
-            {score.source ? ` · ${score.source}` : ''}
+            {score.source ? ` · ${score.source.split(/[.(]/)[0].trim()}` : ''}
           </span>
         </div>
       )}

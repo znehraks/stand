@@ -12,10 +12,10 @@ const segs = [];
 const card = (id, png, dur) => { const f = `${out}/${id}.mp4`; run(`ffmpeg -y -loglevel error -loop 1 -framerate 30 -i ${png} -i docs/video/build/${id}.m4a -t ${dur.toFixed(2)} ${V} ${Aud} -af apad -shortest ${f}`); segs.push(f); };
 const clip = (id, src, start, dur) => { const f = `${out}/${id}.mp4`; run(`ffmpeg -y -loglevel error -ss ${start.toFixed(2)} -t ${dur.toFixed(2)} -i ${src} -i docs/video/build/${id}.m4a -map 0:v:0 -map 1:a:0 ${V} ${Aud} -af apad -shortest ${f}`); segs.push(f); };
 card('01-title', 'docs/video/build/card-title.png', S['01-title'].audio + 0.8);
-const order = ['02-hook', '03-composed', '04-calc', '05-why', '055-studio', '06-levels', '07-friction', '08-author', '09-publisher'];
-for (let i = 0; i < order.length; i++) { const id = order[i]; const start = marks[id]; const end = i + 1 < order.length ? marks[order[i + 1]] : marks['09-end']; clip(id, videoA, start, end - start); }
-card('10-how', 'docs/video/build/card-how.png', S['10-how'].audio + 0.4);
-card('11-end', 'docs/video/build/card-end.png', S['11-end'].audio + 1.0);
+const order = ['02-brief', '03-writes', '04-refuse', '05-hear', '06-lock', '07-parts', '08-why'];
+for (let i = 0; i < order.length; i++) { const id = order[i]; const start = marks[id]; const end = i + 1 < order.length ? marks[order[i + 1]] : marks['08-end']; clip(id, videoA, start, end - start); }
+card('09-how', 'docs/video/build/card-how.png', S['09-how'].audio + 0.4);
+card('10-end', 'docs/video/build/card-end.png', S['10-end'].audio + 1.0);
 fs.writeFileSync(`${out}/list.txt`, segs.map((f) => `file '${process.cwd()}/${f}'`).join('\n'));
-run(`ffmpeg -y -loglevel error -f concat -safe 0 -i ${out}/list.txt -c:v libx264 -preset medium -crf 20 -r 30 -pix_fmt yuv420p ${Aud} -movflags +faststart docs/video/attune-demo.mp4`);
-console.log(execSync('ffprobe -v error -show_entries format=duration:stream=width,height,codec_name -of default=nw=1 docs/video/attune-demo.mp4').toString());
+run(`ffmpeg -y -loglevel error -f concat -safe 0 -i ${out}/list.txt -c:v libx264 -preset medium -crf 20 -r 30 -pix_fmt yuv420p ${Aud} -movflags +faststart docs/video/stand-demo.mp4`);
+console.log(execSync('ffprobe -v error -show_entries format=duration:stream=width,height,codec_name -of default=nw=1 docs/video/stand-demo.mp4').toString());
