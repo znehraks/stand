@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#17171c;color:#ecebe6;font-family:Inter,system-ui,sans-serif}
+.card{width:1280px;height:720px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:0 92px;box-sizing:border-box}
+.logo{display:flex;align-items:center;gap:14px;font-weight:600;font-size:22px;position:absolute;top:54px;left:92px}
+.logo .l{position:relative;width:30px;height:22px;display:flex;flex-direction:column;justify-content:space-between}
+.logo .l i{display:block;height:2px;background:#b9b7b0}
+.logo .l b{position:absolute;right:0;bottom:1px;width:10px;height:10px;border-radius:50%;background:#ff6a4d}
+h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:80px;line-height:1.03;margin:0;letter-spacing:-.01em}
+h1 em{color:#ff6a4d;font-style:italic}
+p{font-size:25px;color:#b9b7b0;margin:24px 0 0;max-width:920px;line-height:1.42}
+.badge{position:absolute;bottom:54px;left:92px;font-size:17px;color:#8d8b85}
+.url{font-size:33px;font-weight:600;margin-top:28px}
+.mono{font-family:'JetBrains Mono',monospace;font-size:21px;margin-top:30px;color:#b9b7b0}
+ul{font-size:24px;line-height:1.62;margin:28px 0 0;padding-left:26px;color:#ecebe6}
+code{font-family:'JetBrains Mono',monospace;font-size:.85em;background:#262630;padding:2px 6px;border-radius:5px}
+</style></head><body>
+<div class="card" id="title">
+  <div class="logo"><span class="l"><i></i><i></i><i></i><i></i><b></b></span>Stand</div>
+  <h1>An arranging studio<br>your agent can <em>write in</em>.</h1>
+  <p>Bring your ensemble and your students' level. The agent writes the parts, the page checks every range and transposition, and you decide by ear.</p>
+  <div class="badge">OpenAI WebMCP Challenge 2026 · stand.znehraks.workers.dev</div>
+</div>
+<div class="card" id="how">
+  <div class="logo"><span class="l"><i></i><i></i><i></i><i></i><b></b></span>Stand · under the hood</div>
+  <h1 style="font-size:52px">The page holds the rules.<br>The agent writes the notes.<br>The person hears the difference.</h1>
+  <ul>
+    <li>three tool surfaces swapped with <code>AbortSignal</code> · 22 tools on the arranging surface</li>
+    <li>the page <em>rejects</em> a write that leaves an instrument's range — with the bar, the note and the fix</li>
+    <li><code>ask_human</code> plays two candidate endings and waits: the agent cannot hear, the person can</li>
+    <li>locked bars are never overwritten · every hand edit and tool call in one timeline</li>
+    <li>real notation and playback in the page: VexFlow, Tone.js, MusicXML · MIDI · parts</li>
+  </ul>
+</div>
+<div class="card" id="end">
+  <div class="logo"><span class="l"><i></i><i></i><i></i><i></i><b></b></span>Stand</div>
+  <h1 style="font-size:60px">Your ensemble.<br>Your students' level.<br><em>Your ear.</em></h1>
+  <div class="url">stand.znehraks.workers.dev</div>
+  <div class="mono">github.com/znehraks/stand · MIT</div>
+  <div class="badge">ChatGPT desktop browser · Chrome 149+ with WebMCP · or press ▶ and watch it play itself</div>
+</div>
+</body></html>
