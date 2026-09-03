@@ -6,7 +6,17 @@ Bring a melody, your ensemble and your students' level. Say *"arrange this for m
 
 ![Stand while an agent writes the parts](docs/shots/writing.png)
 
-**What the page refuses, verbatim:** `Trumpet bar 1 note 1: written E6 (sounding D6) is above the elementary range F#3–C5 sounding (G#3–D5 written).` — with `suggestion: "Drop it an octave to sounding D5 (written E5)."` The agent reads that and rewrites the bar. Even the tune itself gets caught: Ode to Joy dips to a low G in bar 12, below a beginner flute, and the page says so before anyone hands out parts.
+**What the page refuses, verbatim** (a live call against the deployed site):
+
+```
+write_part { part: "trumpet", from_bar: 1, bars: [{ notes: [{ pitch: "D6", dur: "w" }] }] }
+→ { ok: false,
+    error: "Trumpet bar 1 note 1: written E6 (sounding D6) is above the elementary range
+             F3–C5 sounding (G3–D5 written).",
+    issues: [{ kind: "range", suggestion: "Drop it an octave to sounding D5 (written E5)." }] }
+```
+
+The agent reads that and rewrites the bar. Even the tune itself gets caught: Ode to Joy dips to a low G in bar 12, below a beginner flute, and the page says so before anyone hands out parts.
 
 | Conductor score, seven parts | The transposed part a player reads |
 |---|---|

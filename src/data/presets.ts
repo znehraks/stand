@@ -112,8 +112,10 @@ const AMAZING_GRACE: Preset = {
   ],
   chords: ['G', 'G', 'G', 'C', 'G', 'G', 'G', 'D7', 'D7', 'G', 'G', 'C', 'G', 'Em', 'D7', 'G'],
   source:
-    'Tune NEW BRITAIN, anonymous early-American melody first printed in William Walker’s ' +
-    '“Southern Harmony” (1835); words by John Newton (1779). Anonymous tune published ~190 years ago — public domain.',
+    'Tune NEW BRITAIN, anonymous early-American melody first printed in Spilman & Shaw’s ' +
+    '“Columbian Harmony” (1829); first set to John Newton’s words, and given the name NEW BRITAIN, ' +
+    'in William Walker’s “Southern Harmony” (1835). Text from Newton’s “Olney Hymns” (1779). ' +
+    'Anonymous tune printed 1829, text published 1779 — copyright long expired; public domain.',
 };
 
 // ---------------------------------------------------------------------------
@@ -147,9 +149,11 @@ const ARIRANG: Preset = {
   ],
   chords: ['C', 'F', 'Dm', 'C', 'F', 'F', 'F', 'F', 'F', 'F', 'Dm', 'C', 'F', 'F', 'F', 'F'],
   source:
-    '본조 아리랑 (Standard / Gyeonggi Arirang) — Korean folk song, traditional, no known author; ' +
-    'transcribed in print by the early 1900s. Anonymous folk tradition, public domain ' +
-    '(UNESCO Intangible Cultural Heritage of Humanity, 2012).',
+    '본조 아리랑 (Bonjo / “Standard” Arirang), the Seoul–Gyeonggi version popularised as the theme ' +
+    'of the 1926 film 아리랑 — Korean folk song, traditional, no known author. Melody follows the ' +
+    'standard 9/8 transcription in F major. Anonymous folk tradition with no identifiable author — ' +
+    'public domain; inscribed on the UNESCO Representative List of the Intangible Cultural Heritage ' +
+    'of Humanity (Republic of Korea, 2012).',
 };
 
 // ---------------------------------------------------------------------------
@@ -182,20 +186,24 @@ const GREENSLEEVES: Preset = {
     bar('G4/8d F#4/16 E4/8 D#4/8d C#4/16 D#4/8'),
     bar('E4/hd'),
   ],
+  // Bars 3, 7, 11 and 15 are the same phrase (A F# | D E F#) and all take D: it covers the
+  // downbeat A and the second beat's D, which is why bar 11 is not the F#m some settings use.
   chords: [
     'Em', 'Em', 'D', 'C', 'B', 'Em', 'D', 'B7', 'Em',
-    'G', 'F#m', 'Em', 'B', 'G', 'D', 'B7', 'Em',
+    'G', 'D', 'Em', 'B', 'G', 'D', 'B7', 'Em',
   ],
   source:
-    'English traditional, “A New Northern Dittye of the Lady Greene Sleeves”, entered at the ' +
-    'Stationers’ Company in 1580 and printed in Playford’s “The Dancing Master” (1686). ' +
-    'Anonymous 16th-century tune — public domain.',
+    'English traditional. The ballad “A Newe Northen Dittye of ye Ladye Greene Sleves” was ' +
+    'registered by Richard Jones at the London Stationers’ Company in September 1580; the tune ' +
+    'survives in late-16th/early-17th-century lute sources (William Ballet’s Lute Book, Het ' +
+    'Luitboek van Thysius) and appears in Playford’s “The Dancing Master” from the 7th edition ' +
+    '(1686) as “Green-Sleeves and Pudding-Pies”. Anonymous 16th-century tune — public domain.',
 };
 
 // ---------------------------------------------------------------------------
 // 5. Simple Gifts — Joseph Brackett Jr., 1848
-// From the Mary Hazzard manuscript reading in C, transposed down a fourth to G
-// so the whole tune sits in D4–D5. Two-beat pickup is written as rests in bar 1.
+// Note for note the Mary Hazzard manuscript reading (which is in C), transposed up a fifth
+// to G so the whole tune sits in D4–D5. Two-beat pickup is written as rests in bar 1.
 // ---------------------------------------------------------------------------
 const SIMPLE_GIFTS: Preset = {
   id: 'simple-gifts',
@@ -222,8 +230,9 @@ const SIMPLE_GIFTS: Preset = {
 
 // ---------------------------------------------------------------------------
 // 6. Frère Jacques — French traditional round
-// Four two-bar phrases, each stated twice; a canon over a static tonic, which is
-// why every bar carries the same chord.
+// Four two-bar phrases, each stated twice. As a round all four phrases sound together, so
+// every bar repeats the same harmony (F, with a passing C7 mid-bar) — hence one chord, F,
+// on every bar.
 // ---------------------------------------------------------------------------
 const FRERE_JACQUES: Preset = {
   id: 'frere-jacques',
@@ -243,8 +252,12 @@ const FRERE_JACQUES: Preset = {
   ],
   chords: ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'],
   source:
-    'French traditional round, anonymous; earliest known source the manuscript of Jean-Philippe ' +
-    'Rameau’s circle (c. 1780) and printed in Paris by 1811. Anonymous folk round — public domain.',
+    'French traditional round, anonymous. The earliest known version of the melody is a c. 1780 ' +
+    'French manuscript in the Bibliothèque nationale de France, where it appears as “Frère Blaise”; ' +
+    'first printed in Paris in 1811 in “La Clé du Caveau à l’usage de tous les Chansonniers ' +
+    'français”. A BnF manuscript of 86 canons credits Jean-Philippe Rameau (1683–1764), an ' +
+    'attribution argued by musicologist Sylvie Bouissou. Anonymous 18th-century round — or Rameau, ' +
+    'dead since 1764 — either way public domain.',
 };
 
 export const PRESETS: Preset[] = [
